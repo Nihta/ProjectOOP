@@ -1,0 +1,21 @@
+10001
+Thin
+12/12/2011
+Nam
+Dien Chau, Nghe An
+11/11/2012
+10000000
+Officer
+A11
+
+10002
+Nihta
+1/1/2001
+Nam
+Vinh
+12/12/1212
+5000000
+Worker
+12345
+Chu nhat
+

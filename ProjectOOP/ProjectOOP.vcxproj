@@ -150,6 +150,7 @@
     <ClCompile Include="Company.cpp" />
     <ClCompile Include="Date.cpp" />
     <ClCompile Include="Employee.cpp" />
+    <ClCompile Include="FormerEmployee.cpp" />
     <ClCompile Include="Officer.cpp" />
     <ClCompile Include="ProjectOOP.cpp" />
     <ClCompile Include="Worker.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="Company.h" />
     <ClInclude Include="Date.h" />
     <ClInclude Include="Employee.h" />
+    <ClInclude Include="FormerEmployee.h" />
     <ClInclude Include="Officer.h" />
     <ClInclude Include="Worker.h" />
   </ItemGroup>

@@ -3,6 +3,7 @@
 Company::Company()
 {
     this->readDataEmpCur();
+    this->readDataEmpLeave();
     Employee::idCur = 10000 + this->listEmpLeave.size() + this->listEmpOfficer.size() + this->listEmpWork.size();
 }
 
@@ -70,6 +71,45 @@ void Company::readDataEmpCur()
     data.close();
 }
 
+void Company::readDataEmpLeave()
+{
+    // Mở file để đọc dữ liệu
+    fstream data("./dataEmpLeave.txt", ios::in);
+    if (data.fail())
+    {
+        // Nếu mở file thất bại thì tạo một file mới
+        fstream data("./dataEmpLeave.txt", ios::out);
+    }
+    else
+    {
+        while (!data.eof())
+        {
+            string id;
+            getline(data, id);
+
+            string N;
+            getline(data, N);
+
+            string dB;
+            getline(data, dB);
+
+            string G;
+            getline(data, G);
+
+            string dL;
+            getline(data, dL);
+
+            FormerEmployee* FEtmp = new FormerEmployee(N, id, Date(dB), G, Date(dL));
+            this->listEmpLeave.push_back(FEtmp);
+
+            // Bỏ qua dòng trống
+            string tmp;
+            getline(data, tmp);
+        }
+    }
+    data.close();
+}
+
 // Hiện thị danh sách các nhân viên văn phòng
 void Company::displayOfficer()
 {
@@ -85,10 +125,11 @@ void Company::displayOfficer()
         << std::setw(9) << "Room"
         << "\n"
         << string(117, '-') << endl;
-    for (int i = 0; i < listEmpOfficer.size(); i++)
+
+    for (int i = 0; i < this->listEmpOfficer.size(); i++)
     {
         std::cout << std::setw(4) << i + 1;
-        listEmpOfficer[i]->display();
+        this->listEmpOfficer[i]->display();
         std::cout << endl;
     }
 }
@@ -117,13 +158,33 @@ void Company::displayWorker()
     }
 }
 
+
+void Company::displayFormerEmployee()
+{
+    std::cout << string(22, '=') + " Nhan vien da chuyen di " + string(22, '=') << endl;
+    std::cout << std::setw(4) << std::right << "STT"
+        << std::setw(10) << "ID"
+        << std::setw(22) << "Name" 
+        << std::setw(12) << "Birthday"
+        << std::setw(8) << "Gender"
+        << std::setw(12) << "DateLeave"
+        << "\n"
+        << std::string(68, '-') << endl;
+    for (int i = 0; i < this->listEmpLeave.size(); i++)
+    {
+        cout << std::setw(4) << i + 1;
+        this->listEmpLeave[i]->display();
+    }
+}
+
 // Hiện thị thông tin nhân viên
 void Company::display()
 {
     std::cout << "\t[ Chon kieu ban muon hien thi ]"
-        << "\n\t\t1. Hien thi tat ca nhan vien"
+        << "\n\t\t1. Hien thi tat ca nhan vien hien tai"
         << "\n\t\t2. Hien thi nhan vien van phong"
         << "\n\t\t3. Hien thi cong nhan san xuat"
+        << "\n\t\t4. Hien thi nhan vien da chuyen di"
         << "\n\t\t0. Back"
         << endl;
     int option;
@@ -137,7 +198,7 @@ void Company::display()
             system("cls || clear");
             return;
         }
-    } while (3 < option || option < 1);
+    } while (4 < option || option < 1);
     system("cls || clear");
     if (option == 1)
     {
@@ -153,6 +214,10 @@ void Company::display()
     else if (option == 3)
     {
         this->displayWorker();
+    }
+    else if (option == 4)
+    {
+        this->displayFormerEmployee();
     }
 }
 // Thêm nhân viên vào công ty
@@ -251,8 +316,16 @@ void Company::updateFileEmpCur()
 
 void Company::updateFileEmpLeave()
 {
+    fstream file("./dataEmpLeave.txt", ios::out);
+    for (int i = 0; i < this->listEmpLeave.size(); i++)
+    {
+        file << this->listEmpLeave[i]->exportDataToString();
+        file << endl;
+    }
+    file.close();
 }
 
 Company::~Company()
 {
+    this->updateFileEmpLeave();
 }

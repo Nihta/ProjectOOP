@@ -1,9 +1,13 @@
 #include <iostream>
 #include "Company.h"
+#include "FormerEmployee.h"
+#include "Date.h"
 int main()
 {
     Company X;
     X.menu();
-    std::cout << "Hello World!\n";
+
+    // system("powershell cat ./dataEmpCur.txt");
+    // system("powershell cat ./dataEmpLeave.txt");
     return 0;
 }
