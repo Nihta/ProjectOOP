@@ -22,6 +22,11 @@ public:
     Employee();
     Employee(string fN, string id, Date dB, string g, string a, Date dJ, unsigned int s);
     int getCountEmp();
+    string getId();
+    string getName();
+    Date getBD();
+    string getGender();
+
     virtual string getType() = 0;
     virtual void display();
     virtual string exportDataToString();

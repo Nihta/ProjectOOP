@@ -8,7 +8,7 @@ Date::Date()
     struct tm* timeinfo;
     timeinfo = localtime(&rawtime);
     day = timeinfo->tm_mday;
-    month = timeinfo->tm_mon;
+    month = timeinfo->tm_mon + 1;
     year = timeinfo->tm_year + 1900;
 }
 

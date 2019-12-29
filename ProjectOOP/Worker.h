@@ -18,5 +18,7 @@ public:
     string getType();
     void display();
     string exportDataToString();
+    string getGender();
+    string getDayOff();
     ~Worker();
 };

@@ -8,14 +8,14 @@ Dien Chau, Nghe An
 Officer
 A11
 
-10002
-Nihta
-1/1/2001
+10006
+Phan Trung Hieu
+1/1/1999
 Nam
 Vinh
-12/12/1212
-5000000
+12/12/2012
+10000000
 Worker
-12345
+30
 Chu nhat
 

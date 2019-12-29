@@ -71,6 +71,17 @@ string Worker::exportDataToString()
     return res.str();
 }
 
+string Worker::getGender()
+{
+    return this->gender;
+}
+
+string Worker::getDayOff()
+{
+
+    return this->dayOff;
+}
+
 Worker::~Worker()
 {
 }

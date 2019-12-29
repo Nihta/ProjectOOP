@@ -10,8 +10,8 @@
 #include "FormerEmployee.h"
 using namespace std;
 
-
-class Company {
+class Company
+{
 private:
     vector<Employee *> listEmpOfficer;
     vector<Employee *> listEmpWork;
@@ -30,5 +30,8 @@ public:
     void countEmp();
     void updateFileEmpCur();
     void updateFileEmpLeave();
+    void statistical();
+    void staticFemaleDayOff();
+    void employeeManager();
     ~Company();
 };

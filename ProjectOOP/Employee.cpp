@@ -51,15 +51,35 @@ int Employee::getCountEmp()
     return this->count;
 }
 
+std::string Employee::getId()
+{
+    return this->id;
+}
+
+string Employee::getName()
+{
+    return this->fullName;
+}
+
+Date Employee::getBD()
+{
+    return this->dateOfBirth;
+}
+
+string Employee::getGender()
+{
+    return this->gender;
+}
+
 void Employee::display()
 {
     cout << std::setw(10) << this->id
-        << std::setw(22) << this->fullName
-        << std::setw(12) << this->dateOfBirth
-        << std::setw(8) << this->gender
-        << std::setw(28) << (this->address.length() < 28 ? this->address : (this->address.substr(0, 24) + "..."))
-        << std::setw(12) << this->dateJoin
-        << std::setw(12) << std::setprecision(12) << this->salary;
+         << std::setw(22) << this->fullName
+         << std::setw(12) << this->dateOfBirth
+         << std::setw(8) << this->gender
+         << std::setw(28) << (this->address.length() < 28 ? this->address : (this->address.substr(0, 24) + "..."))
+         << std::setw(12) << this->dateJoin
+         << std::setw(12) << std::setprecision(12) << this->salary;
 }
 
 string Employee::exportDataToString()
