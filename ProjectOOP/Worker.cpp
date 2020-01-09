@@ -12,6 +12,7 @@ Worker::Worker() : Employee::Employee()
         // Nhập khác 2 -> 7 thì sẽ thành chủ nhật
         cout << "Nhap ngay nghi trong tuan (2 -> 7): ";
         cin >> option;
+        cin.ignore();
         switch (option)
         {
         case 2:
@@ -78,8 +79,17 @@ string Worker::getGender()
 
 string Worker::getDayOff()
 {
-
     return this->dayOff;
+}
+
+void Worker::setDayoff(string newDayOff)
+{
+    this->dayOff = newDayOff;
+}
+
+void Worker::setProduct(unsigned int newProduct)
+{
+    this->product = newProduct;
 }
 
 Worker::~Worker()

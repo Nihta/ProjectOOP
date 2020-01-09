@@ -32,6 +32,10 @@ public:
     void updateFileEmpLeave();
     void statistical();
     void staticFemaleDayOff();
+    unsigned long long int countSalary();
+    unsigned int countEmp(string type, string gender);
+    void editInfoEmp(Employee *emp);
     void employeeManager();
+    void other();
     ~Company();
 };

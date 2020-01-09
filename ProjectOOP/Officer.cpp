@@ -22,6 +22,11 @@ void Officer::display()
     cout << std::setw(9) << this->room;
 }
 
+void Officer::setRoom(string newRoom)
+{
+    this->room = newRoom;
+}
+
 string Officer::exportDataToString()
 {
     stringstream res;

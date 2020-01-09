@@ -24,9 +24,12 @@ public:
     int getCountEmp();
     string getId();
     string getName();
+    void setName(string newName);
+    void setAddress(string newAddress);
+    unsigned int getSalary();
+    void setSalary(unsigned int newSalary);
     Date getBD();
     string getGender();
-
     virtual string getType() = 0;
     virtual void display();
     virtual string exportDataToString();

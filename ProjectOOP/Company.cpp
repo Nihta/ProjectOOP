@@ -160,6 +160,7 @@ void Company::displayWorker()
     }
 }
 
+// Hiện thị danh sách công nhân chuyển đi
 void Company::displayFormerEmployee()
 {
     std::cout << string(22, '=') + " Nhan vien da chuyen di " + string(22, '=') << endl;
@@ -229,6 +230,7 @@ void Company::display()
         this->staticFemaleDayOff();
     }
 }
+
 // Thêm nhân viên vào công ty
 void Company::add()
 {
@@ -246,6 +248,8 @@ void Company::add()
         if (option == 0)
             return;
     } while (option != 1 && option != 2);
+
+    system("cls || clear");
 
     if (option == 1)
     {
@@ -266,14 +270,16 @@ void Company::menu()
     std::cout << "\n==================== MENU ===================="
               << "\n\t1. Them nhan vien"
               << "\n\t2. Hien thi"
-              << "\n\t3. Xem thong tin cong ty"
-              << "\n\t9. Xoa man hinh"
+              << "\n\t3. Thong ke cong ty"
+              << "\n\t4. Xoa man hinh"
+              << "\n\t9. Other"
               << "\n\t0. Exit"
               << std::endl;
 
     cout << ">> ";
     int option;
     cin >> option;
+    cin.ignore();
     switch (option)
     {
     case 0:
@@ -295,8 +301,14 @@ void Company::menu()
         this->menu();
         break;
 
+    case 4:
+        system("cls || clear");
+        this->menu();
+        break;
+
     case 9:
         system("cls || clear");
+        this->other();
         this->menu();
         break;
 
@@ -314,6 +326,7 @@ void Company::countEmp()
     std::cout << this->listEmpOfficer[0]->getCountEmp();
 }
 
+// Ghi danh sách nhân viên hiện tại trong công ty vào tệp
 void Company::updateFileEmpCur()
 {
     fstream file("./dataEmpCur.txt", ios::out);
@@ -330,6 +343,7 @@ void Company::updateFileEmpCur()
     file.close();
 }
 
+// Ghi danh sách các công nhân đã chuyển đi vào tệp
 void Company::updateFileEmpLeave()
 {
     fstream file("./dataEmpLeave.txt", ios::out);
@@ -341,14 +355,22 @@ void Company::updateFileEmpLeave()
     file.close();
 }
 
+// Thống kê công ty 
 void Company::statistical()
 {
     cout << "Cong ty co " << this->listEmpOfficer.size() + this->listEmpWork.size() << " nhan vien (hien tai) bao gom:"
-         << "\n\t+ " << this->listEmpOfficer.size() << " nhan vien van phong"
-         << "\n\t+ " << this->listEmpWork.size() << " cong nhan san xuat" << endl;
-    cout << "Va co " << this->listEmpLeave.size() << " nguoi da roi khoi cong ty" << endl;
+        << "\n\t+ " << this->listEmpOfficer.size() << " nhan vien van phong:"
+        << "\n\t\t+ " << this->countEmp("Officer", "Nam") << " nhan vien nam"
+        << "\n\t\t+ " << this->countEmp("Officer", "Nu") << " nhan vien nu"
+        << "\n\t+ " << this->listEmpWork.size() << " cong nhan san xuat:"
+        << "\n\t\t+ " << this->countEmp("Worker", "Nam") << " nhan vien nam"
+        << "\n\t\t+ " << this->countEmp("Worker", "Nu") << " nhan vien nu"
+        << "\n\t+ Tong luong phai tra moi thang: " << this->countSalary()<< " VND"
+        << "\n\t+ " << this->listEmpLeave.size() << " cuu nhan vien (da roi khoi cong ty)"
+        << endl;
 }
 
+// Thống kê ngày nghỉ của công nhân nữ theo ngày nghỉ trong tuần
 void Company::staticFemaleDayOff()
 {
     vector<string> day = {"Thu 2", "Thu 3", "Thu 4", "Thu 5", "Thu 6", "Thu 7", "Chu nhat"};
@@ -383,11 +405,48 @@ void Company::staticFemaleDayOff()
     }
 }
 
+// Tính tổng lương phải trả
+unsigned long long int Company::countSalary()
+{
+    unsigned long long int res = 0;
+
+    for (auto& emp : this->listEmpOfficer)
+    {
+        res += emp->getSalary();
+    }
+
+    for (auto& emp : this->listEmpWork)
+    {
+        res += emp->getSalary();
+    }
+
+    return res;
+}
+
+// Đếm sô lượng công nhân theo loại và giới tính
+unsigned int Company::countEmp(string type, string gender) {
+    int res = 0;
+    if (type == "Officer")
+    {
+        for (auto& emp : this->listEmpOfficer)
+            if (emp->getGender() == gender)
+                res++;
+    }
+    if (type == "Worker")
+    {
+        for (auto& emp : this->listEmpWork)
+            if (emp->getGender() == gender)
+                res++;
+    }
+    return res;
+}
+
+// Các thao tác với nhân viên
 void Company::employeeManager()
 {
     std::cout << "\n[ Chon mot chuc nang ]"
               << "\n\t1. Xoa nhan vien theo id"
-              << "\n\t2. Coming soon!"
+              << "\n\t2. Sua thong tin nhan vien theo id"
               << "\n\t0. Menu" << endl;
 
     int option;
@@ -403,6 +462,7 @@ void Company::employeeManager()
         }
     } while (option != 1 && option != 2);
 
+    // Xóa nhân viên
     if (option == 1)
     {
         cout << "\t\tNhap id nhan vien can xoa: ";
@@ -461,11 +521,214 @@ void Company::employeeManager()
     }
     else if (option == 2)
     {
-        return;
+        cout << "\t\tNhap id nhan vien can sua: ";
+        std::string idEmpDel;
+        std::getline(cin, idEmpDel);
+        bool isExist = false;
+
+        for (int i = 0; i < this->listEmpOfficer.size(); i++)
+        {
+            if (this->listEmpOfficer[i]->getId() == idEmpDel)
+            {
+                this->editInfoEmp(this->listEmpOfficer[i]);
+                isExist = true;
+            }
+        }
+
+        if (!isExist)
+        {
+            for (int i = 0; i < this->listEmpWork.size(); i++)
+            {
+                if (this->listEmpWork[i]->getId() == idEmpDel)
+                {
+                    this->editInfoEmp(this->listEmpWork[i]);
+                    isExist = true;
+                }
+            }
+        }
+
+        if (!isExist)
+        {
+            cout << "Khong co nhan vien nao co id la " << idEmpDel << "!" << endl;
+        }
+    }
+}
+
+// Sửa thông tin nhân viên
+void Company::editInfoEmp(Employee* emp) {
+    while (true)
+    {
+        system("cls");
+        // Hiện thị thông tin nhân viên đang chọn để sửa
+        if (emp->getType() == "Officer")
+        {
+            std::cout << std::right
+                << std::setw(10) << "ID"
+                << std::setw(22) << "Name"
+                << std::setw(12) << "Birthday"
+                << std::setw(8) << "Gender"
+                << std::setw(28) << "Address"
+                << std::setw(12) << "DateJoin"
+                << std::setw(12) << "Salary"
+                << std::setw(9) << "Room"
+                << "\n"
+                << string(113, '-') << endl;
+        }
+        else if (emp->getType() == "Worker")
+        {
+            std::cout << std::right
+                << std::setw(10) << "ID"
+                << std::setw(22) << "Name"
+                << std::setw(12) << "Birthday"
+                << std::setw(8) << "Gender"
+                << std::setw(28) << "Address"
+                << std::setw(12) << "DateJoin"
+                << std::setw(12) << "Salary"
+                << std::setw(10) << "Produce"
+                << std::setw(10) << "DayOff"
+                << "\n"
+                << string(124, '-') << endl;
+        }
+        emp->display();
+
+        std::cout << "\n[ Chon muc can su doi ]"
+            << "\n\t1. Sua ten"
+            << "\n\t2. Sua dia chi"
+            << "\n\t3. Sua luong";
+
+        if (emp->getType() == "Officer")
+        {
+            cout << "\n\t4. Sua phong lam viec";
+        }
+        else if (emp->getType() == "Worker")
+        {
+            cout << "\n\t4. Sua dinh muc san pham";
+            if (emp->getGender() == "Nu")
+            {
+                cout << "\n\t5. Sua ngay nghi";
+            }
+        }
+       std::cout << "\n\t0. Thoat" << endl;
+
+        int option;
+        cout << "\t>> ";
+        cin >> option;
+        cin.ignore();
+
+        if (option == 0)
+        {
+            system("cls");
+            return;
+        }
+        else if (option == 1)
+        {
+            cout << "\t\tNhap ten moi: ";
+            string newData;
+            getline(cin, newData);
+            emp->setName(newData);
+        }
+        else if (option == 2)
+        {
+            cout << "\t\tNhap dia chi moi: ";
+            string newData;
+            getline(cin, newData);
+            emp->setAddress(newData);
+        }
+        else if (option == 3)
+        {
+            cout << "\t\tNhap muc luong moi: ";
+            unsigned int newData;
+            cin >> newData;
+            cin.ignore();
+            emp->setSalary(newData);
+        }
+
+        if (emp->getType() == "Officer" && option == 4)
+        {
+            cout << "\t\tNhap phong lam viec moi: ";
+            string newData;
+            getline(cin, newData);
+            ((Officer*) emp)->setRoom(newData);
+        }
+
+        if (emp->getType() == "Worker")
+        {
+            if (option == 4)
+            {
+                cout << "\t\tNhap dinh muc san pham moi: ";
+                unsigned int newData;
+                cin >> newData;
+                cin.ignore();
+                ((Worker*)emp)->setProduct(newData);
+            }
+            else if (option == 5 && emp->getGender() == "Nu")
+            {
+                string newDayOff;
+                int doff;
+                // Nhập khác 2 -> 7 thì sẽ thành chủ nhật
+                cout << "\t\tChon ngay nghi trong tuan (2 -> 8): ";
+                cin >> doff;
+                cin.ignore();
+                switch (doff)
+                {
+                case 2:
+                    newDayOff = "Thu 2";
+                    break;
+                case 3:
+                    newDayOff = "Thu 3";
+                    break;
+                case 4:
+                    newDayOff = "Thu 4";
+                    break;
+                case 5:
+                    newDayOff = "Thu 5";
+                    break;
+                case 6:
+                    newDayOff = "Thu 6";
+                    break;
+                case 7:
+                    newDayOff = "Thu 7";
+                    break;
+                default:
+                    newDayOff = "Chu nhat";
+                    break;
+                }
+                ((Worker*)emp)->setDayoff(newDayOff);
+            }
+        }
+        this->updateFileEmpCur();
+    }
+}
+
+void Company::other()
+{
+    std::cout << "cat ec: Xem file luu nhan vien"
+        << "\ncat el: Xem file luu nhan vien chuyen di"
+        << "\ndelete all: Xoa toan bo du lieu cong ty\n>> ";
+    std::string cmd;
+    std::getline(cin, cmd);
+
+    if (cmd == "cat ec")
+    {
+        system("cls");
+        system("powershell cat ./dataEmpCur.txt");
+    }
+    else if (cmd == "cat el")
+    {
+        system("cls");
+        system("powershell cat ./dataEmpLeave.txt");
+    }
+    else if (cmd == "delete all")
+    {
+        this->listEmpOfficer.clear();
+        this->listEmpWork.clear();
+        this->listEmpLeave.clear();
+        cout << "Ban co the huy xoa bang cac nhan [X] tat chuong trinh" << endl;
     }
 }
 
 Company::~Company()
 {
+    this->updateFileEmpCur();
     this->updateFileEmpLeave();
 }

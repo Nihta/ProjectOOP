@@ -164,7 +164,7 @@
     <ClInclude Include="Worker.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram21.cd" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

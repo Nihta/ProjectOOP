@@ -23,9 +23,16 @@ Employee::Employee()
     cout << "Nhap dia chi: ";
     getline(cin, this->address);
 
-    cout << "Nhap ngay vao cong ty: ";
-    cin >> this->dateJoin;
-    cin.ignore();
+    string dJ;
+    cout << "Nhap ngay vao cong ty (nhap 0 de chon ngay hien tai): ";
+    getline(cin, dJ);
+    if (dJ == "0")
+    {
+        this->dateJoin = Date();
+    }
+    else {
+        this->dateJoin = Date(dJ);
+    }
 
     cout << "Nhap luong: ";
     cin >> this->salary;
@@ -59,6 +66,23 @@ std::string Employee::getId()
 string Employee::getName()
 {
     return this->fullName;
+}
+
+void Employee::setName(string newName)
+{
+    this->fullName = newName;
+}
+
+void Employee::setAddress(string newAddress)
+{
+    this->address = newAddress;
+}
+unsigned int Employee::getSalary()
+{
+    return this->salary;
+}
+void Employee::setSalary(unsigned int newSalary) {
+    this->salary = newSalary;
 }
 
 Date Employee::getBD()

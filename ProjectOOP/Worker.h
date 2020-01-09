@@ -20,5 +20,7 @@ public:
     string exportDataToString();
     string getGender();
     string getDayOff();
+    void setDayoff(string newDayOff);
+    void setProduct(unsigned int newProduct);
     ~Worker();
 };
